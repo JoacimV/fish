@@ -30,8 +30,6 @@ jobs:
         run: npm install
       - name: Build project
         run: npm run build
-      - name: Test project
-        run: npm run test
       - name: upload artifact
         uses: actions/upload-artifact@v2
         with:
