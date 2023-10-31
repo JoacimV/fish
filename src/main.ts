@@ -1,6 +1,6 @@
 import Phaser from 'phaser'
-import Gameplay from './Scenes/game'
 import './style.css'
+import { SceneHandler } from './Scenes/scene-handler';
 
 let config: Phaser.Types.Core.GameConfig = {
   type: Phaser.AUTO,
@@ -8,7 +8,7 @@ let config: Phaser.Types.Core.GameConfig = {
   height: window.innerHeight,
   parent: 'app',
   pixelArt: true,
-  scene: [Gameplay],
+  scene: [SceneHandler],
   physics: {
     default: 'arcade',
     arcade: {
@@ -16,7 +16,7 @@ let config: Phaser.Types.Core.GameConfig = {
       gravity: { y: 0 }
     }
   }
+
 }
 
-const game = new Phaser.Game(config)
-console.log('created game', game)
+new Phaser.Game(config)

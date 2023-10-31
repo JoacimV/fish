@@ -7,7 +7,6 @@ export class KeyboardController implements ControlPort {
     public up: boolean = false;
 
     public constructor() {
-        console.log('created controller')
         window.addEventListener('keydown', this.onKeyDown.bind(this));
         window.addEventListener('keyup', this.onKeyUp.bind(this));
     }

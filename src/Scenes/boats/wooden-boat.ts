@@ -1,34 +1,23 @@
-import { Boat, Vector2D } from "./boat-port";
-import { GameObjects } from 'phaser';
+import { Boat } from "./boat-port";
 import { ControlPort } from "../controls/control-port";
 
 export interface WoodenBoatProps {
-    app: Phaser.Scene;
     controlPort: ControlPort;
+    scene: Phaser.Scene;
 }
 
 export class WoodenBoat implements Boat {
     public sprite: Phaser.Physics.Arcade.Image;
-    public velocity: Vector2D;
-    text: GameObjects.Text;
 
     public constructor(private props: WoodenBoatProps) {
-        const { app } = props;
-        this.velocity = { x: 0, y: 0 }
-        this.sprite = app.physics.add.image(0, 0, 'boat');
-        // Rotate image 90 degrees so it's facing right
+        this.sprite = this.props.scene.physics.add.image(0, 0, 'boat');
         this.sprite.setMaxVelocity(50)
         this.sprite.setDrag(13)
-
         // // center the sprite's anchor point
         this.sprite.setOrigin(0.5, 0.5)
-        // move the sprite to the center of the screen       
-        this.sprite.x = app.cameras.main.centerX;
-        this.sprite.y = app.cameras.main.centerY;
         // Scale the sprite up
         this.sprite.scaleX = 3;
         this.sprite.scaleY = 3;
-        this.text = app.add.text(10, 10, '', { font: '16px Courier', fill: '#00ff00' } as any);
     }
 
     update(delta: number) {
@@ -46,18 +35,19 @@ export class WoodenBoat implements Boat {
         // Only allow turning while moving
         if (body.speed > 0) {
             if (left) {
-                this.sprite.setAngularVelocity(-ACCELERATION / 16);
+                this.sprite.setAngularVelocity(-ACCELERATION / 8);
             } else if (right) {
-                this.sprite.setAngularVelocity(ACCELERATION / 16);
+                this.sprite.setAngularVelocity(ACCELERATION / 8);
             } else {
                 this.sprite.setAngularVelocity(0);
             }
+        } else {
+            this.sprite.setAngularVelocity(0);
         }
-        this.text.setText(`Speed: ${body.speed}`);
     }
 
-    multiplyScalar(vector: Vector2D, scalar: number) {
-        vector.x *= scalar;
-        vector.y *= scalar;
+    public getSpeed(): number {
+        const body = this.sprite.body as Phaser.Physics.Arcade.Body;
+        return body.speed;
     }
 }
