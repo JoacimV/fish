@@ -1,6 +1,5 @@
 import Phaser from 'phaser'
 
-import boatImage from "./boat.png"
 import { Boat } from './boat-port'
 import { WoodenBoat } from './wooden-boat';
 
@@ -8,7 +7,7 @@ import { WoodenBoat } from './wooden-boat';
 export default class Gameplay extends Phaser.Scene {
   private boat: Boat = {} as Boat;
   preload() {
-    this.load.image('boat', boatImage)
+    this.load.image('boat', './boat.png')
   }
 
   create() {
