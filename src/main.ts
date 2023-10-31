@@ -18,4 +18,5 @@ let config: Phaser.Types.Core.GameConfig = {
   }
 }
 
-new Phaser.Game(config)
+const game = new Phaser.Game(config)
+console.log('created game', game)

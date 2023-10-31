@@ -12,6 +12,7 @@ export default class Gameplay extends Phaser.Scene {
   }
 
   create() {
+    console.log('created gameplay scene')
     // Set background color to dark blue
     this.cameras.main.setBackgroundColor(0x000066);
     this.boat = new WoodenBoat(this);
