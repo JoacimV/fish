@@ -30,10 +30,21 @@ jobs:
         run: npm install
       - name: Build project
         run: npm run build
+      - name: Test project
+        run: npm run test
+      - name: upload artifact
+        uses: actions/upload-artifact@v2
+        with:
+          # Uploads the ./dist directory as an artifact
+          path: 'dist'
   deploy:
     needs: build
     runs-on: ubuntu-latest
     steps:
+      - name: download artifact from build job
+        uses: actions/download-artifact@v2
+        with:
+          name: dist
       - name: Setup Pages
         uses: actions/configure-pages@v3
       - name: Upload artifact
