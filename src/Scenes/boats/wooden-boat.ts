@@ -1,53 +1,47 @@
 import { Boat } from "./boat-port";
 import { ControlPort } from "../controls/control-port";
+import { IPhysicsObject } from "../game-engine/ports/physics-port";
 
 export interface WoodenBoatProps {
     controlPort: ControlPort;
-    scene: Phaser.Scene;
+    physicsObject: IPhysicsObject;
 }
 
 export class WoodenBoat implements Boat {
-    public sprite: Phaser.Physics.Arcade.Image;
+    public physicsObject: IPhysicsObject;
 
     public constructor(private props: WoodenBoatProps) {
-        this.sprite = this.props.scene.physics.add.image(0, 0, 'boat');
-        this.sprite.setMaxVelocity(50)
-        this.sprite.setDrag(13)
-        // // center the sprite's anchor point
-        this.sprite.setOrigin(0.5, 0.5)
-        // Scale the sprite up
-        this.sprite.scaleX = 3;
-        this.sprite.scaleY = 3;
+        this.physicsObject = props.physicsObject;
+        this.physicsObject.setMaxVelocity(50)
+        this.physicsObject.setDrag(13)
     }
 
     update(delta: number) {
         const { left, right, up } = this.props.controlPort;
-        const body = this.sprite.body as Phaser.Physics.Arcade.Body;
         const ACCELERATION = 200;
         if (up) {
             // rotate 90 degrees counter-clockwise
-            const velX = Math.cos(this.sprite.rotation) * ACCELERATION;
-            const velY = Math.sin(this.sprite.rotation) * ACCELERATION;
-            this.sprite.setVelocity(velX, velY);
+            const velX = Math.cos(this.physicsObject.getRotation()) * ACCELERATION;
+            const velY = Math.sin(this.physicsObject.getRotation()) * ACCELERATION;
+            this.physicsObject.setVelocity(velX, velY);
         } else {
-            this.sprite.setAcceleration(0, 0);
+            this.physicsObject.setAcceleration(0, 0);
         }
         // Only allow turning while moving
-        if (body.speed > 0) {
+        if (this.physicsObject.getSpeed() > 0) {
             if (left) {
-                this.sprite.setAngularVelocity(-ACCELERATION / 8);
+                this.physicsObject.setAngularVelocity(-ACCELERATION / 8);
             } else if (right) {
-                this.sprite.setAngularVelocity(ACCELERATION / 8);
+                this.physicsObject.setAngularVelocity(ACCELERATION / 8);
             } else {
-                this.sprite.setAngularVelocity(0);
+                this.physicsObject.setAngularVelocity(0);
             }
         } else {
-            this.sprite.setAngularVelocity(0);
+            this.physicsObject.setAngularVelocity(0);
         }
     }
 
     public getSpeed(): number {
-        const body = this.sprite.body as Phaser.Physics.Arcade.Body;
-        return body.speed;
+        return this.physicsObject.getSpeed()
     }
 }

@@ -1,6 +1,6 @@
 import Phaser from 'phaser'
 import './style.css'
-import { SceneHandler } from './Scenes/scene-handler';
+import { OceanSceneStack } from './Scenes/ocean-scene-stack';
 
 let config: Phaser.Types.Core.GameConfig = {
   type: Phaser.AUTO,
@@ -8,7 +8,7 @@ let config: Phaser.Types.Core.GameConfig = {
   height: window.innerHeight,
   parent: 'app',
   pixelArt: true,
-  scene: [SceneHandler],
+  scene: [OceanSceneStack],
   physics: {
     default: 'arcade',
     arcade: {
