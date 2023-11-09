@@ -11,7 +11,11 @@ export class WoodenBoat implements Boat {
 
     public constructor(private props: WoodenBoatProps) {
         this.sprite = this.props.scene.physics.add.image(0, 0, 'boat');
-        this.sprite.setMaxVelocity(50)
+        // Make the collider ellipse shaped
+        this.sprite.body?.setCircle(6, 8, 9);
+        // this.sprite.setSize(16, 16);
+
+        this.sprite.setMaxVelocity(150)
         this.sprite.setDrag(13)
         // // center the sprite's anchor point
         this.sprite.setOrigin(0.5, 0.5)
@@ -35,9 +39,9 @@ export class WoodenBoat implements Boat {
         // Only allow turning while moving
         if (body.speed > 0) {
             if (left) {
-                this.sprite.setAngularVelocity(-ACCELERATION / 8);
+                this.sprite.setAngularVelocity(-ACCELERATION / 2);
             } else if (right) {
-                this.sprite.setAngularVelocity(ACCELERATION / 8);
+                this.sprite.setAngularVelocity(ACCELERATION / 2);
             } else {
                 this.sprite.setAngularVelocity(0);
             }

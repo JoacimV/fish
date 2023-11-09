@@ -14,8 +14,8 @@ export class FollowCamera implements CameraPort {
     constructor(props: CameraProps) {
         const { x, y, width, height } = props;
         this.camera = new Phaser.Cameras.Scene2D.Camera(x, y, width, height);
-        // Set background color to dark blue
-        this.camera.setBackgroundColor(0x000066);
+        // Set background color to the same blue as the water
+        this.camera.setBackgroundColor('rgba(80, 167, 232, 1)');
         this.camera.name = props.name;
     }
     update(delta: number) {
