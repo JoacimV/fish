@@ -3,6 +3,13 @@ import { KeyboardController } from "./controls/keyboard-controller";
 import { Scene } from "phaser";
 import Gameplay from "./game";
 
+interface ReactEvent extends CustomEvent {
+    detail: {
+        data: string
+    }
+}
+
+
 export class SceneHandler extends Scene {
     private gamePlay: Gameplay = {} as Gameplay;
     public constructor() {
@@ -21,6 +28,13 @@ export class SceneHandler extends Scene {
             scene: this
         });
         this.gamePlay.create();
+        window.addEventListener('react', (event) => {
+            const reactEvent = event as ReactEvent;
+            console.log('react event', reactEvent.detail.data);
+        });
+        // Publish create message to the global window object
+        window.dispatchEvent(new CustomEvent('phaser', { detail: { my: 'data' } }));
+
     }
 
     update(time: number, delta: number) {
