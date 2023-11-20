@@ -16,7 +16,7 @@ export class SceneHandler extends Scene {
         super({ visible: true })
     }
     preload() {
-        this.load.spritesheet('fantasy', './fantasy-tiles.png', { frameWidth: 64, frameHeight: 64 });
+        // this.load.spritesheet('fantasy', './fantasy-tiles.png', { frameWidth: 64, frameHeight: 64 });
         this.load.spritesheet('terrain', './terrain.png', { frameWidth: 48, frameHeight: 48 })
         this.load.image('boat', './boat.png');
     }
