@@ -7,19 +7,25 @@
     "preview": "vite preview",
     "test": "jest"
   },
+  "dependencies": {
+    "@types/react": "^18.2.37",
+    "@types/react-dom": "^18.2.15",
+    "babel-preset-react": "^6.24.1",
+    "phaser": "latest",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0"
+  },
   "devDependencies": {
     "@babel/core": "^7.23.2",
     "@babel/preset-env": "^7.23.2",
     "@babel/preset-typescript": "^7.23.2",
     "@jest/types": "^29.6.3",
     "@types/jest": "^29.5.7",
+    "@vitejs/plugin-react": "^4.0.4",
     "babel-jest": "^29.7.0",
     "jest": "^29.7.0",
     "jest-mock-extended": "3.0.5",
     "typescript": "latest",
     "vite": "latest"
-  },
-  "dependencies": {
-    "phaser": "latest"
   }
 }
