@@ -44,5 +44,5 @@ const App = () => {
 
 }
 
-const root = createRoot(document.getElementById('app')!);
+const root = createRoot(document.getElementById('ui')!);
 root.render(<App />);
