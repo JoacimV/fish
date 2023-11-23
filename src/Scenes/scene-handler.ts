@@ -18,7 +18,9 @@ export class SceneHandler extends Scene {
     preload() {
         // this.load.spritesheet('fantasy', './fantasy-tiles.png', { frameWidth: 64, frameHeight: 64 });
         this.load.spritesheet('terrain', './terrain.png', { frameWidth: 48, frameHeight: 48 })
+        this.load.spritesheet('animatedBobber', './bobber-animated.png', { frameWidth: 16, frameHeight: 16 })
         this.load.image('boat', './boat.png');
+        this.load.image('bobber', './bobber.png');
     }
 
     create() {
