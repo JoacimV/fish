@@ -14,7 +14,7 @@ export class IslandGenerator {
     }
 
 
-    public generateIslandV2(x: number, y: number, width: number, height: number): Phaser.Physics.Arcade.Image[] {
+    public generateIsland(x: number, y: number, width: number, height: number): Phaser.Physics.Arcade.Image[] {
         // Combine the edges to form a island with the given width and height
         for (let i = 0; i < width; i++) {
             for (let j = 0; j < height; j++) {
