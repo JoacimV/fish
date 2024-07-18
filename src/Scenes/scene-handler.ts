@@ -17,10 +17,10 @@ export class SceneHandler extends Scene {
     }
     preload() {
         // this.load.spritesheet('fantasy', './fantasy-tiles.png', { frameWidth: 64, frameHeight: 64 });
-        this.load.spritesheet('terrain', './fish/dist/terrain.png', { frameWidth: 48, frameHeight: 48 })
-        this.load.spritesheet('animatedBobber', './fish/dist/bobber-animated.png', { frameWidth: 16, frameHeight: 16 })
-        this.load.image('boat', './fish/dist/boat.png');
-        this.load.image('bobber', './fish/dist/bobber.png');
+        this.load.spritesheet('terrain', '/fish/terrain.png', { frameWidth: 48, frameHeight: 48 })
+        this.load.spritesheet('animatedBobber', '/fish/bobber-animated.png', { frameWidth: 16, frameHeight: 16 })
+        this.load.image('boat', '/fish/boat.png');
+        this.load.image('bobber', '/fish/bobber.png');
     }
 
     create() {
