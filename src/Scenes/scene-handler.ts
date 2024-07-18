@@ -13,14 +13,14 @@ interface ReactEvent extends CustomEvent {
 export class SceneHandler extends Scene {
     private gamePlay: Gameplay = {} as Gameplay;
     public constructor() {
-        super({ visible: true })
+        super({ visible: true, key: 'SceneHandler' });
     }
     preload() {
         // this.load.spritesheet('fantasy', './fantasy-tiles.png', { frameWidth: 64, frameHeight: 64 });
-        this.load.spritesheet('terrain', './terrain.png', { frameWidth: 48, frameHeight: 48 })
-        this.load.spritesheet('animatedBobber', './bobber-animated.png', { frameWidth: 16, frameHeight: 16 })
-        this.load.image('boat', './boat.png');
-        this.load.image('bobber', './bobber.png');
+        this.load.spritesheet('terrain', './fish/dist/terrain.png', { frameWidth: 48, frameHeight: 48 })
+        this.load.spritesheet('animatedBobber', './fish/dist/bobber-animated.png', { frameWidth: 16, frameHeight: 16 })
+        this.load.image('boat', './fish/dist/boat.png');
+        this.load.image('bobber', './fish/dist/bobber.png');
     }
 
     create() {
@@ -32,7 +32,6 @@ export class SceneHandler extends Scene {
         this.gamePlay.create();
         window.addEventListener('react', (event) => {
             const reactEvent = event as ReactEvent;
-            console.log('react event', reactEvent.detail.data);
         });
         // Publish create message to the global window object
         window.dispatchEvent(new CustomEvent('phaser', { detail: { my: 'data' } }));

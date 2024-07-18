@@ -10,20 +10,18 @@ export interface CameraProps {
 
 export class FollowCamera implements CameraPort {
     public camera: Phaser.Cameras.Scene2D.Camera = {} as Phaser.Cameras.Scene2D.Camera;
-    private follow: Phaser.Physics.Arcade.Image = {} as Phaser.Physics.Arcade.Image;
     constructor(props: CameraProps) {
         const { x, y, width, height } = props;
         this.camera = new Phaser.Cameras.Scene2D.Camera(x, y, width, height);
+        this.camera.setZoom(.5)
         // Set background color to the same blue as the water
-        this.camera.setBackgroundColor('rgba(80, 167, 232, 1)');
+        // this.camera.setBackgroundColor('rgba(80, 167, 232, 1)');
         this.camera.name = props.name;
     }
     update(delta: number) {
-        const { follow } = this;
-        this.camera.startFollow(follow, false, 0.5, 0.5)
     }
 
     public setFollow(follow: Phaser.Physics.Arcade.Image) {
-        this.follow = follow;
+        this.camera.startFollow(follow, true, 1, 1);
     }
 }

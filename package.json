@@ -13,7 +13,8 @@
     "babel-preset-react": "^6.24.1",
     "phaser": "latest",
     "react": "^18.2.0",
-    "react-dom": "^18.2.0"
+    "react-dom": "^18.2.0",
+    "simplex-noise": "^4.0.2"
   },
   "devDependencies": {
     "@babel/core": "^7.23.2",

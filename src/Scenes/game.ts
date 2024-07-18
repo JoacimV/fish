@@ -3,7 +3,7 @@ import { Boat } from './boats/boat-port'
 import { ControlPort } from './controls/control-port';
 import { CameraPort } from './camera/camera-port';
 import { WoodenBoat } from './boats/wooden-boat';
-import { IslandGenerator } from './maps/island-generator';
+import { PerlinMap } from './map';
 
 export interface GameplayProps {
   controlPort: ControlPort;
@@ -23,16 +23,35 @@ export default class Gameplay {
     this.scene = props.scene;
   }
 
-
   create() {
-    const islandEdges = new IslandGenerator(this.scene).generateIsland(0, 90, 15, 10);
-    this.boat = new WoodenBoat({ controlPort: this.controlPort, scene: this.scene });
+    // const islandEdges = new IslandGenerator(this.scene).generateIsland(0, 90, 15, 10);
+    const map = PerlinMap.instance;
+    const seaBed = map.seaBed;
+    // Loop over the seaBed and if the value is less than 10, draw a rectangle (island). one rectangle is 10x10
+    const size = 1000;
+    for (let i = 0; i < seaBed.length; i++) {
+      for (let j = 0; j < seaBed[i].length; j++) {
+        const x = i * size;
+        const y = j * size;
+        if (seaBed[i][j] < 20) {
+          this.scene.add.rectangle(x, y, size, size, 0x3da74b, (1 - seaBed[i][j]) / 100);
+        } else {
+          this.scene.add.curve
+          const rect = this.scene.add.rectangle(x, y, size, size, 0x5b83fa, (1 - seaBed[i][j]) / 100);
+          rect.postFX.addGlow(0x3da74b, 10, 0.5);
+        }
+      }
+    }
+
+
+    this.boat = WoodenBoat.instance;
+    WoodenBoat.init({ controlPort: this.controlPort, scene: this.scene });
     this.cameraPort.setFollow(this.boat.sprite);
     // remove the default camera
     this.scene.cameras.remove(this.scene.cameras.main);
     this.scene.cameras.addExisting(this.cameraPort.camera);
     // Add collision detection between boat and island
-    this.scene.physics.add.collider(this.boat.sprite, islandEdges);
+    // this.scene.physics.add.collider(this.boat.sprite, islandEdges);
   }
 
   update(time: number, delta: number) {
@@ -60,7 +79,5 @@ export default class Gameplay {
       line.lineStyle(1, 0xffffff, 1);
       line.lineBetween(boatImage.x, boatImage.y, this.boat.sprite.x, this.boat.sprite.y);
     }
-
-    // UI
   }
 }

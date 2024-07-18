@@ -1,6 +1,7 @@
 import Phaser from 'phaser'
 import './style.css'
 import { SceneHandler } from './Scenes/scene-handler';
+import { UIScene } from './Scenes/ui-scene';
 
 let config: Phaser.Types.Core.GameConfig = {
   type: Phaser.AUTO,
@@ -8,12 +9,14 @@ let config: Phaser.Types.Core.GameConfig = {
   height: window.innerHeight,
   parent: 'app',
   pixelArt: true,
-  scene: [SceneHandler],
+  seed: ['joacim'],
+  scene: [SceneHandler,UIScene],
+  powerPreference: 'high-performance',
   physics: {
     default: 'arcade',
     arcade: {
       debug: false,
-      gravity: { y: 0 }
+      gravity: { x: 0, y: 0 }
     }
   }
 
