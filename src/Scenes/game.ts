@@ -37,8 +37,7 @@ export default class Gameplay {
           this.scene.add.rectangle(x, y, size, size, 0x3da74b, (1 - seaBed[i][j]) / 100);
         } else {
           this.scene.add.curve
-          const rect = this.scene.add.rectangle(x, y, size, size, 0x5b83fa, (1 - seaBed[i][j]) / 100);
-          rect.postFX.addGlow(0x3da74b, 10, 0.5);
+          this.scene.add.rectangle(x, y, size, size, 0x5b83fa, (1 - seaBed[i][j]) / 100);
         }
       }
     }
