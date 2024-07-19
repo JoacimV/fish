@@ -14,6 +14,9 @@ export class UIScene extends Scene {
     private positionText: Phaser.GameObjects.Text = {} as Phaser.GameObjects.Text;
     private depthText: Phaser.GameObjects.Text = {} as Phaser.GameObjects.Text;
     private speedText: Phaser.GameObjects.Text = {} as Phaser.GameObjects.Text;
+    private leftButton: Phaser.GameObjects.Text = {} as Phaser.GameObjects.Text;
+    private rightButton: Phaser.GameObjects.Text = {} as Phaser.GameObjects.Text;
+    private goStraightButton: Phaser.GameObjects.Text = {} as Phaser.GameObjects.Text;
     public constructor() {
         super({ visible: true, key: 'UIScene', active: true });
         this.boat = WoodenBoat.instance;
@@ -30,14 +33,13 @@ export class UIScene extends Scene {
                     this.graphics.fillStyle(0xff0000);
                     this.graphics.fillPoint(i * scale, j * scale, 4);
                 } else {
-                    this.graphics.fillStyle(0x99d6ff, (1-arr[i][j]) / 100);
+                    this.graphics.fillStyle(0x99d6ff, (1 - arr[i][j]) / 100);
                     this.graphics.fillPoint(i * scale, j * scale, scale);
                 }
             }
         }
     }
     drawGroundMap(arr: number[][]) {
-
         const scale = 10;
         for (let i = 0; i < arr.length; i++) {
             for (let j = 0; j < arr[i].length; j++) {
@@ -65,6 +67,13 @@ export class UIScene extends Scene {
         this.positionText = this.add.text(this.windowWidth * 0.01, this.windowHeight * .3, `Position: ${0}, ${0}`);
         this.depthText = this.add.text(this.windowWidth * 0.01, this.windowHeight * .35, `Depth: ${0}`);
         this.speedText = this.add.text(this.windowWidth * 0.01, this.windowHeight * .4, `Speed: ${0}`);
+
+        this.leftButton = this.add.text(this.windowWidth * 0.45, this.windowHeight * .95, 'Left').setInteractive();
+        this.leftButton.on('pointerdown', () => this.boat.setTurnLeft(true));
+        this.rightButton = this.add.text(this.windowWidth * 0.55, this.windowHeight * .95, 'Right').setInteractive();
+        this.rightButton.on('pointerdown', () => this.boat.setTurnRight(true));
+        this.goStraightButton = this.add.text(this.windowWidth * 0.5, this.windowHeight * .95, 'Go straight').setInteractive();
+        this.goStraightButton.on('pointerdown', () => { this.boat.setTurnRight(false); this.boat.setTurnLeft(false) });
     }
 
     throttleButton(text: string, x: number, y: number, throttle: number) {

@@ -13,6 +13,9 @@ export class WoodenBoat implements Boat {
     private throttle = 0;
     private targetThrottle = 0;
 
+    private turnRight = false;
+    private turnLeft = false;
+
     private constructor() { }
 
     update(delta: number) {
@@ -30,15 +33,17 @@ export class WoodenBoat implements Boat {
         }
         // Only allow turning while moving
         if (body.speed > 0) {
-            if (left) {
+            if (left || this.turnLeft) {
                 this.sprite.setAngularVelocity(-ACCELERATION);
-            } else if (right) {
+            } else if (right || this.turnRight) {
                 this.sprite.setAngularVelocity(ACCELERATION);
             } else {
                 this.sprite.setAngularVelocity(0);
             }
         } else {
             this.sprite.setAngularVelocity(0);
+            this.setTurnLeft(false);
+            this.setTurnRight(false);
         }
     }
 
@@ -47,7 +52,8 @@ export class WoodenBoat implements Boat {
         if (!body) {
             return '';
         }
-        return `${JSON.stringify(Math.round(body.speed / 10))}`;
+        // Round speed to 2 decimals
+        return (body.speed / 10).toFixed(2);
     }
 
     public setThrottle(throttle: number) {
@@ -60,6 +66,14 @@ export class WoodenBoat implements Boat {
 
     public getPosition(): { x: number; y: number; } {
         return { x: this.sprite.x, y: this.sprite.y };
+    }
+
+    public setTurnRight(turnRight: boolean) {
+        this.turnRight = turnRight;
+    }
+
+    public setTurnLeft(turnLeft: boolean) {
+        this.turnLeft = turnLeft;
     }
 
     public static init(props: WoodenBoatProps) {
