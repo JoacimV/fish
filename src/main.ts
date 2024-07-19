@@ -12,6 +12,10 @@ let config: Phaser.Types.Core.GameConfig = {
   seed: ['joacim'],
   scene: [SceneHandler, UIScene],
   powerPreference: 'high-performance',
+  scale: {
+    mode: Phaser.Scale.ScaleModes.FIT,
+    autoCenter: Phaser.Scale.Center.CENTER_BOTH
+  },
   physics: {
     default: 'arcade',
     arcade: {
