@@ -68,11 +68,11 @@ export class UIScene extends Scene {
         this.depthText = this.add.text(this.windowWidth * 0.01, this.windowHeight * .35, `Depth: ${0}`);
         this.speedText = this.add.text(this.windowWidth * 0.01, this.windowHeight * .4, `Speed: ${0}`);
 
-        this.leftButton = this.add.text(this.windowWidth * 0.45, this.windowHeight * .95, 'Left').setInteractive();
+        this.leftButton = this.add.text(this.windowWidth * 0.4, this.windowHeight * .95, 'Left').setInteractive();
         this.leftButton.on('pointerdown', () => this.boat.setTurnLeft(true));
-        this.rightButton = this.add.text(this.windowWidth * 0.55, this.windowHeight * .95, 'Right').setInteractive();
+        this.rightButton = this.add.text(this.windowWidth * 0.5, this.windowHeight * .95, 'Right').setInteractive();
         this.rightButton.on('pointerdown', () => this.boat.setTurnRight(true));
-        this.goStraightButton = this.add.text(this.windowWidth * 0.5, this.windowHeight * .95, 'Go straight').setInteractive();
+        this.goStraightButton = this.add.text(this.windowWidth * 0.6, this.windowHeight * .95, 'Go straight').setInteractive();
         this.goStraightButton.on('pointerdown', () => { this.boat.setTurnRight(false); this.boat.setTurnLeft(false) });
     }
 
