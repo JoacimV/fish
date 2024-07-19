@@ -30,6 +30,7 @@ export class WoodenBoat implements Boat {
             this.sprite.setVelocity(velX, velY);
         } else {
             this.sprite.setAcceleration(0, 0);
+            this.throttle = 0;
         }
         // Only allow turning while moving
         if (body.speed > 0) {
