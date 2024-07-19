@@ -13,7 +13,7 @@ let config: Phaser.Types.Core.GameConfig = {
   scene: [SceneHandler, UIScene],
   powerPreference: 'high-performance',
   scale: {
-    mode: Phaser.Scale.ScaleModes.FIT,
+    mode: Phaser.Scale.ScaleModes.EXPAND,
     autoCenter: Phaser.Scale.Center.CENTER_BOTH
   },
   physics: {
