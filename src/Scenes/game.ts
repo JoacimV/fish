@@ -28,36 +28,48 @@ export default class Gameplay {
     const map = PerlinMap.instance;
     const seaBed = map.seaBed;
     // Loop over the seaBed and if the value is less than 10, draw a rectangle (island). one rectangle is 10x10
-    const size = 1000;
+    const size = 10;
+    const grass = this.scene.add.group();
+    const sand = this.scene.add.group();
+    const water = this.scene.add.group();
+
     for (let i = 0; i < seaBed.length; i++) {
       for (let j = 0; j < seaBed[i].length; j++) {
         const x = i * size;
         const y = j * size;
-        if (seaBed[i][j] < 20) {
-          this.scene.add.rectangle(x, y, size, size, 0x3da74b, (1 - seaBed[i][j]) / 100);
+        if (seaBed[i][j] < 18) {
+          grass.add(this.scene.add.rectangle(x, y, size, size, 0x3da74b, (1 - seaBed[i][j]) / 100));
+        } else if (seaBed[i][j] < 22) {
+          // Sand
+          sand.add(this.scene.add.rectangle(x, y, size, size, 0xf4a460, (1 - seaBed[i][j]) / 100));
         } else {
-          this.scene.add.curve
-          this.scene.add.rectangle(x, y, size, size, 0x5b83fa, (1 - seaBed[i][j]) / 100);
+          // this.scene.add.curve
+          water.add(this.scene.add.rectangle(x, y, size, size, 0x5b83fa, (1 - seaBed[i][j]) / 100));
         }
       }
     }
+    // Add collision detection between boat and sand
+    for (let i = 0; i < sand.getChildren().length; i++) {
+      this.scene.physics.add.existing(sand.getChildren()[i], true);
+    }
 
+    // Add collision between boat and world edges
+    this.scene.physics.world.setBounds(0, 0, seaBed.length * size, seaBed[0].length * size);
 
     this.boat = WoodenBoat.instance;
     WoodenBoat.init({ controlPort: this.controlPort, scene: this.scene });
+    this.scene.physics.add.collider(this.boat.sprite, sand);
+    this.boat.sprite.setCollideWorldBounds(true);
     this.cameraPort.setFollow(this.boat.sprite);
     // remove the default camera
     this.scene.cameras.remove(this.scene.cameras.main);
     this.scene.cameras.addExisting(this.cameraPort.camera);
-    // Add collision detection between boat and island
-    // this.scene.physics.add.collider(this.boat.sprite, islandEdges);
   }
 
   update(time: number, delta: number) {
     this.boat.update(delta);
-    this.cameraPort.update(delta);
     // Add a customer cursor
-    this.scene.input.setDefaultCursor('url(bobber.png), pointer');
+    // this.scene.input.setDefaultCursor('url(bobber.png), pointer');
     // Get cursor position
     // const cursor = this.scene.input.activePointer;
     // log what type of tile the cursor is over

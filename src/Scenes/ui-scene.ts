@@ -6,14 +6,14 @@ import { WoodenBoat } from "./boats/wooden-boat";
 export class UIScene extends Scene {
     private readonly windowWidth = window.innerWidth;
     private readonly windowHeight = window.innerHeight;
-    private SCALE: number = 1000;
+    private SCALE: number = 100;
     private seaBed: number[][] = [];
     private scaledSeaBed: number[][] = [];
-    private scaledGround: number[][] = [];
     private graphics: Phaser.GameObjects.Graphics = {} as Phaser.GameObjects.Graphics;
     private boat;
     private positionText: Phaser.GameObjects.Text = {} as Phaser.GameObjects.Text;
     private depthText: Phaser.GameObjects.Text = {} as Phaser.GameObjects.Text;
+    private speedText: Phaser.GameObjects.Text = {} as Phaser.GameObjects.Text;
     public constructor() {
         super({ visible: true, key: 'UIScene', active: true });
         this.boat = WoodenBoat.instance;
@@ -23,7 +23,6 @@ export class UIScene extends Scene {
 
     }
     drawMap(arr: number[][], position: { x: number, y: number }) {
-        console.log(arr.length);
         const scale = 10;
         for (let i = 0; i < arr.length; i++) {
             for (let j = 0; j < arr[i].length; j++) {
@@ -31,7 +30,7 @@ export class UIScene extends Scene {
                     this.graphics.fillStyle(0xff0000);
                     this.graphics.fillPoint(i * scale, j * scale, 4);
                 } else {
-                    this.graphics.fillStyle(0x99d6ff, Math.abs((1 - arr[i][j]) / 100));
+                    this.graphics.fillStyle(0x99d6ff, (1-arr[i][j]) / 100);
                     this.graphics.fillPoint(i * scale, j * scale, scale);
                 }
             }
@@ -55,9 +54,9 @@ export class UIScene extends Scene {
         this.scaledSeaBed = this.seaBed.map((row, i) => {
             return row.filter((_, j) => j % 10 === 0);
         }).filter((_, i) => i % 10 === 0);
-        this.scaledGround = PerlinMap.instance.ground.map((row, i) => {
-            return row.filter((_, j) => j % 10 === 0);
-        }).filter((_, i) => i % 10 === 0);
+        // this.scaledGround = PerlinMap.instance.ground.map((row, i) => {
+        //     return row.filter((_, j) => j % 10 === 0);
+        // }).filter((_, i) => i % 10 === 0);
 
         // Create buttons for the controls
         this.throttleButton('Stop', this.windowWidth * 0.01, this.windowHeight * .95, 0);
@@ -65,6 +64,7 @@ export class UIScene extends Scene {
         this.throttleButton('Full speed', this.windowWidth * 0.01, this.windowHeight * .89, 1);
         this.positionText = this.add.text(this.windowWidth * 0.01, this.windowHeight * .3, `Position: ${0}, ${0}`);
         this.depthText = this.add.text(this.windowWidth * 0.01, this.windowHeight * .35, `Depth: ${0}`);
+        this.speedText = this.add.text(this.windowWidth * 0.01, this.windowHeight * .4, `Speed: ${0}`);
     }
 
     throttleButton(text: string, x: number, y: number, throttle: number) {
@@ -78,10 +78,10 @@ export class UIScene extends Scene {
         this.graphics.clear();
         this.drawMap(this.scaledSeaBed, this.boat.getPosition());
         // Translate ground map to the right
-        this.graphics.translateCanvas(this.windowWidth * 0.5, 0);
-        this.drawGroundMap(this.scaledGround);
-        // Undo the translation
-        this.graphics.translateCanvas(-this.windowWidth * 0.5, 0);
+        // this.graphics.translateCanvas(this.windowWidth * 0.5, 0);
+        // this.drawGroundMap(this.scaledGround);
+        // // Undo the translation
+        // this.graphics.translateCanvas(-this.windowWidth * 0.5, 0);
         // Draw a red dot at the boat's position  
         const pos = this.boat.getPosition();
 
@@ -94,6 +94,7 @@ export class UIScene extends Scene {
             const depth = this.seaBed[Math.floor(pos.x / this.SCALE)][Math.floor(pos.y / this.SCALE)];
             this.depthText.setText(`Depth: ${depth}`);
         }
+        this.speedText.setText(`Speed: ${this.boat.getSpeed()}`);
         // console.log(this.seaBed[position.x ][position.y ]);
         // this.depthText.setText(`Depth: ${depth}`);
 

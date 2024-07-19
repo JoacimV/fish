@@ -10,7 +10,7 @@ let config: Phaser.Types.Core.GameConfig = {
   parent: 'app',
   pixelArt: true,
   seed: ['joacim'],
-  scene: [SceneHandler,UIScene],
+  scene: [SceneHandler, UIScene],
   powerPreference: 'high-performance',
   physics: {
     default: 'arcade',
