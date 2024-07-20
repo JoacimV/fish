@@ -23,6 +23,11 @@ export class WoodenBoat implements Boat {
         const { left, right } = this.controlPort;
         const body = this.sprite.body as Phaser.Physics.Arcade.Body;
         const ACCELERATION = 50;
+        if (this.targetThrottle === .5) {
+            this.emitter.setParticleLifespan(100);
+        } else if (this.targetThrottle === 1) {
+            this.emitter.setParticleLifespan(200);
+        }
         if (this.targetThrottle > 0) {
             this.emitter.emitting = true;
             // Make particles go in the opposite direction of the boat
@@ -101,7 +106,6 @@ export class WoodenBoat implements Boat {
             speed: { min: 100, max: 150 },
             scale: { start: 0.03, end: 0 },
             angle: { min: 10, max: -10 },
-            // maxParticles:10,
             blendMode: 'ADD',
             emitting: true,
             accelerationX: -100,
