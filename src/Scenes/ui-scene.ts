@@ -17,37 +17,34 @@ export class UIScene extends Scene {
     private leftButton: Phaser.GameObjects.Text = {} as Phaser.GameObjects.Text;
     private rightButton: Phaser.GameObjects.Text = {} as Phaser.GameObjects.Text;
     private goStraightButton: Phaser.GameObjects.Text = {} as Phaser.GameObjects.Text;
+    private boatSprite: Phaser.GameObjects.Image = {} as Phaser.GameObjects.Image;
     public constructor() {
         super({ visible: true, key: 'UIScene', active: true });
         this.boat = WoodenBoat.instance;
 
     }
     preload() {
+        this.load.image('boat', '/fish/boat.png');
 
     }
-    drawMap(arr: number[][], position: { x: number, y: number }) {
-        const scale = 4 ;
-        const posScale = 5;
+    drawMap(arr: number[][]) {
+        const scale = 4;
         for (let i = 0; i < arr.length; i++) {
             for (let j = 0; j < arr[i].length; j++) {
-                if (i === Math.floor(position.x / this.SCALE / posScale) && j === Math.floor(position.y / this.SCALE / posScale)) {
-                    this.graphics.fillStyle(0xff0000, .9);
-                    this.graphics.fillPoint(i * scale, j * scale, 4)
-                    continue;
+                if (arr[i][j] < 18) {
+                    this.graphics.fillStyle(0x3da74b, (1 - arr[i][j]) / 100);
+                } else if (arr[i][j] < 22) {
+                    // Sand
+                    this.graphics.fillStyle(0xf4a460, (1 - arr[i][j]) / 100);
                 } else {
-                    if (arr[i][j] < 18) {
-                        this.graphics.fillStyle(0x3da74b, (1 - arr[i][j]) / 100);
-                    } else if (arr[i][j] < 22) {
-                        // Sand
-                        this.graphics.fillStyle(0xf4a460, (1 - arr[i][j]) / 100);
-                    } else {
-                        this.graphics.fillStyle(0x99d6ff, (1 - arr[i][j]) / 100);
-                    }
-                    this.graphics.fillPoint(i * scale, j * scale, scale);
+                    this.graphics.fillStyle(0x99d6ff, (1 - arr[i][j]) / 100);
                 }
+                this.graphics.fillPoint(i * scale, j * scale, scale);
             }
+
         }
     }
+
     drawGroundMap(arr: number[][]) {
         const scale = 10;
         for (let i = 0; i < arr.length; i++) {
@@ -60,14 +57,15 @@ export class UIScene extends Scene {
     create() {
         this.graphics = this.add.graphics();
 
+        this.boatSprite = this.add.image(22, 33, 'boat')
+        this.boatSprite.setScale(0.3);
+        this.add.existing(this.boatSprite);
         this.seaBed = PerlinMap.instance.seaBed;
         // Take every 10th value to reduce the size of the map
         this.scaledSeaBed = this.seaBed.map((row, i) => {
             return row.filter((_, j) => j % 5 === 0);
         }).filter((_, i) => i % 5 === 0);
-        // this.scaledGround = PerlinMap.instance.ground.map((row, i) => {
-        //     return row.filter((_, j) => j % 10 === 0);
-        // }).filter((_, i) => i % 10 === 0);
+        this.drawMap(this.scaledSeaBed);
 
         // Create buttons for the controls
         this.throttleButton('Stop', this.windowWidth * 0.01, this.windowHeight * .95, 0);
@@ -97,13 +95,6 @@ export class UIScene extends Scene {
     }
 
     update(time: number, delta: number) {
-        this.graphics.clear();
-        this.drawMap(this.scaledSeaBed, this.boat.getPosition());
-        // Translate ground map to the right
-        // this.graphics.translateCanvas(this.windowWidth * 0.5, 0);
-        // this.drawGroundMap(this.scaledGround);
-        // // Undo the translation
-        // this.graphics.translateCanvas(-this.windowWidth * 0.5, 0);
         const pos = this.boat.getPosition();
         this.positionText.setText(`Position: ${Math.floor(pos.x / this.SCALE)}, ${Math.floor(pos.y / this.SCALE)}`);
         // const position = this.boat.getPosition();
@@ -112,6 +103,9 @@ export class UIScene extends Scene {
             this.depthText.setText(`Depth: ${depth}`);
         }
         this.speedText.setText(`Speed: ${this.boat.getSpeed()}`);
+        // Update boatSprite position
+        this.boatSprite.setPosition((Math.floor(pos.x / this.SCALE) * 0.8), (Math.floor(pos.y / this.SCALE) * 0.8));
+        this.boatSprite.setRotation(this.boat.sprite.rotation);
     }
 }
 

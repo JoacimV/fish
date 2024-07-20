@@ -21,6 +21,7 @@ export class SceneHandler extends Scene {
         this.load.spritesheet('animatedBobber', '/fish/bobber-animated.png', { frameWidth: 16, frameHeight: 16 })
         this.load.image('boat', '/fish/boat.png');
         this.load.image('bobber', '/fish/bobber.png');
+        this.load.image('elec3', '/fish/elec3.png');
     }
 
     create() {

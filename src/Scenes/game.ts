@@ -23,6 +23,8 @@ export default class Gameplay {
     this.scene = props.scene;
   }
 
+  preload() {
+  }
   create() {
     // const islandEdges = new IslandGenerator(this.scene).generateIsland(0, 90, 15, 10);
     const map = PerlinMap.instance;
@@ -42,9 +44,11 @@ export default class Gameplay {
         } else if (seaBed[i][j] < 22) {
           // Sand
           sand.add(this.scene.add.rectangle(x, y, size, size, 0xf4a460, (1 - seaBed[i][j]) / 100));
-        } else {
-          // this.scene.add.curve
+        } else if(seaBed[i][j] < 25) {
           water.add(this.scene.add.rectangle(x, y, size, size, 0x5b83fa, (1 - seaBed[i][j]) / 100));
+        }          else if(seaBed[i][j] < 30) {
+          water.add(this.scene.add.rectangle(x, y, size, size, 0x5bb3fa, (1 - seaBed[i][j]) / 100));
+          // this.scene.add.curve
         }
       }
     }
@@ -59,7 +63,6 @@ export default class Gameplay {
     this.boat = WoodenBoat.instance;
     WoodenBoat.init({ controlPort: this.controlPort, scene: this.scene });
     this.scene.physics.add.collider(this.boat.sprite, sand);
-    this.boat.sprite.setCollideWorldBounds(true);
     this.cameraPort.setFollow(this.boat.sprite);
     // remove the default camera
     this.scene.cameras.remove(this.scene.cameras.main);

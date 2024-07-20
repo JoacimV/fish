@@ -15,6 +15,7 @@ export class WoodenBoat implements Boat {
 
     private turnRight = false;
     private turnLeft = false;
+    private emitter: Phaser.GameObjects.Particles.ParticleEmitter = {} as Phaser.GameObjects.Particles.ParticleEmitter;
 
     private constructor() { }
 
@@ -23,6 +24,11 @@ export class WoodenBoat implements Boat {
         const body = this.sprite.body as Phaser.Physics.Arcade.Body;
         const ACCELERATION = 50;
         if (this.targetThrottle > 0) {
+            this.emitter.emitting = true;
+            // Make particles go in the opposite direction of the boat
+            // this.emitter.speed( -body.speed,  -body.speed);
+            this.emitter.angle = this.sprite.angle - 180;
+            // this.emitter.setParticleSpeed(-body.velocity.x, -body.velocity.y);
             this.throttle = Phaser.Math.Linear(this.throttle, this.targetThrottle, delta / 2000); // Linear interpolation
             // rotate 90 degrees counter-clockwise
             const velX = Math.cos(this.sprite.rotation) * ACCELERATION * this.throttle;
@@ -31,6 +37,7 @@ export class WoodenBoat implements Boat {
         } else {
             this.sprite.setAcceleration(0, 0);
             this.throttle = 0;
+            this.emitter.emitting = false;
         }
         // Only allow turning while moving
         if (body.speed > 0) {
@@ -45,6 +52,12 @@ export class WoodenBoat implements Boat {
             this.sprite.setAngularVelocity(0);
             this.setTurnLeft(false);
             this.setTurnRight(false);
+        }
+
+        if (this.emitter) {
+            // Set the emitter's position to the boat's rear end
+            this.emitter.x = this.sprite.x - Math.cos(this.sprite.rotation) * 15;
+            this.emitter.y = this.sprite.y - Math.sin(this.sprite.rotation) * 15;
         }
     }
 
@@ -82,20 +95,19 @@ export class WoodenBoat implements Boat {
         this.#instance.sprite = props.scene.physics.add.image(500, 840, 'boat');
         // Make the collider ellipse shaped
         this.#instance.sprite.body?.setCircle(6, 8, 9);
-        // this.#instance.sprite.setMaxVelocity(150);
         this.#instance.sprite.setDrag(13);
-        // this.#instance.sprite.setAngularDrag(100);
-        // this.#instance.sprite.setBounce(0.2);
-        // this.#instance.sprite.setDamping(true);
-        // this.#instance.sprite.setFriction(1);
-        // // center the sprite's anchor point
-        // this.#instance.sprite.setOrigin(0.5, 0.5);
-        // Scale the sprite up
-        // this.#instance.sprite.scaleX = 6;
-        // this.#instance.sprite.scaleY = 8;
-        // Move the sprite to the top layer
-        // this.#instance.sprite.setDepth(1);
+        this.#instance.emitter = this.#instance.sprite.scene.add.particles(500, 840, 'elec3', {
+            lifespan: 100,
+            speed: { min: 100, max: 150 },
+            scale: { start: 0.03, end: 0 },
+            angle: { min: 10, max: -10 },
+            // maxParticles:10,
+            blendMode: 'ADD',
+            emitting: true,
+            accelerationX: -100,
+            accelerationY: -100,
 
+        });
     }
 
     public static get instance() {
